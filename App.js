@@ -17,15 +17,14 @@ export default class Weather extends Component {
   //   this.fetchData()
   // }
 
-  fetchData () {
-    console.log('===repsData====')
-    const REQUEST_URL = `https://wis.qq.com/weather/common?source=pc&weather_type=observe%7Cforecast_1h%7Cforecast_24h%7Cindex%7Calarm%7Climit%7Ctips%7Crise&province=%E6%B1%9F%E8%8B%8F%E7%9C%81&city=%E5%8D%97%E4%BA%AC%E5%B8%82&county=&callback=jQuery1113027862026349638835_1564044459821&_=1564044459823`;
-    fetch(REQUEST_URL)
-      // .then(reps => reps.json())
-      .then(repsData => {
-        console.log(repsData.json(), '===repsData====')
-      })
-  }
+  // fetchData () {
+  //   const REQUEST_URL = `https://wis.qq.com/weather/common?source=pc&weather_type=observe%7Cforecast_1h%7Cforecast_24h%7Cindex%7Calarm%7Climit%7Ctips%7Crise&province=%E6%B1%9F%E8%8B%8F%E7%9C%81&city=%E5%8D%97%E4%BA%AC%E5%B8%82&county=&callback=jQuery1113027862026349638835_1564044459821&_=1564044459823`;
+  //   fetch(REQUEST_URL)
+  //     .then(reps => reps.json())
+  //     .then(repsData => {
+  //       console.log(repsData.json(), '===repsData====')
+  //     })
+  // }
 
   render () {
     const weatherData = this.state.weatherData;
@@ -54,22 +53,22 @@ export default class Weather extends Component {
       })
 
       return (
-        <View style={styles.view1} key={index}>
+        <View style={styles.weatherAreaView} key={index}>
           <ScrollView showsVerticalScrollIndicator={false} style={styles.pageContainer}>
             <View style={styles.head}>
-              <Text style={styles.areaName}>雨花台区</Text>
-              <Text style={styles.weatherDes}>大部多云</Text>
-              <Text style={styles.temperate}>35</Text>
+              <Text style={styles.areaName}>{item.areaName}</Text>
+              <Text style={styles.weatherDes}>{item.nowWeather}</Text>
+              <Text style={styles.temperate}>{item.nowDegree}</Text>
             </View>
             <View style={styles.weatherDay}>
               <View style={styles.todayInfo}>
                 <View style={styles.todayName}>
-                  <Text style={styles.today}>星期五</Text>
-                  <Text style={styles.today}>今天</Text>
+                  <Text style={styles.today}>{item.nowWeek}</Text>
+                  <Text style={styles.today}>{item.nowDay}</Text>
                 </View>
                 <View style={styles.todayMaxMin}>
-                  <Text style={styles.maxToMin}>37</Text>
-                  <Text style={styles.maxToMin}>28</Text>
+                  <Text style={styles.maxToMin}>{item.nowMax}</Text>
+                  <Text style={styles.maxToMin}>{item.nowMin}</Text>
                 </View>
               </View>
               <View>
@@ -83,7 +82,7 @@ export default class Weather extends Component {
                 {dayItem}
               </View>
               <View style={[styles.description, styles.weatherDayScroll]}>
-                <Text style={styles.descriptionText}>今日：晴间多云，热指数44。最高38。今日晚间局部多云，最低气温28。</Text>
+                <Text style={styles.descriptionText}>{item.weatherDescrption}</Text>
               </View>
             </View>
           </ScrollView>
@@ -95,9 +94,6 @@ export default class Weather extends Component {
       <View style={styles.wrapper}>
         <Swiper>
           {weatherAreaItem}
-          <View style={styles.view2}>
-            <Text>qqqqqqqqqqq</Text>
-          </View>
         </Swiper>
       </View>
     )
@@ -110,7 +106,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1
   },
-  view1: {
+  weatherAreaView: {
     backgroundColor: '#03A9F4',
     flex: 1,
     justifyContent: 'space-between',
@@ -228,15 +224,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#FFF'
   },
-
-  view2: {
-    backgroundColor: 'yellow',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 50
-  },
-
 
   ml10: {
     marginLeft: 20
