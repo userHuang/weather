@@ -2,90 +2,20 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, PixelRatio } from 'react-native';
 import Swiper from 'react-native-swiper';
 import Dimensions from 'Dimensions';
-// import {weatherData} from './util';
-// console.log(weatherData, '==weatherData===')
-
-const weatherData = [{
-  weather_24: [{
-    time: '17时',
-    icon: '',
-    degree: '36'
-  }, {
-    time: '18时',
-    icon: '',
-    degree: '36'
-  }, {
-    time: '19时',
-    icon: '',
-    degree: '36'
-  }, {
-    time: '20时',
-    icon: '',
-    degree: '36'
-  }, {
-    time: '21时',
-    icon: '',
-    degree: '36'
-  }, {
-    time: '22时',
-    icon: '',
-    degree: '36'
-  }, {
-    time: '23时',
-    icon: '',
-    degree: '36'
-  }, {
-    time: '00时',
-    icon: '',
-    degree: '36'
-  }],
-  weather_week: [{
-    time: '星期五',
-    icon: '',
-    max: '37',
-    min: '26'
-  }, {
-    time: '星期六',
-    icon: '',
-    max: '37',
-    min: '26'
-  }, {
-    time: '星期日',
-    icon: '',
-    max: '37',
-    min: '26'
-  }, {
-    time: '星期一',
-    icon: '',
-    max: '37',
-    min: '26'
-  }, {
-    time: '星期二',
-    icon: '',
-    max: '37',
-    min: '26'
-  }, {
-    time: '星期三',
-    icon: '',
-    max: '37',
-    min: '26'
-  }, {
-    time: '星期四',
-    icon: '',
-    max: '37',
-    min: '26'
-  }]
-}]
+import Icon from 'react-native-vector-icons/Ionicons';
+import Util from './util';
 
 export default class Weather extends Component {
   constructor (props) {
     super(props)
-    this.state = {}
+    this.state = {
+      weatherData: Util.weatherData
+    }
   }
 
-  componentDidMount () {
-    this.fetchData()
-  }
+  // componentDidMount () {
+  //   this.fetchData()
+  // }
 
   fetchData () {
     console.log('===repsData====')
@@ -98,142 +28,73 @@ export default class Weather extends Component {
   }
 
   render () {
+    const weatherData = this.state.weatherData;
+    const weatherAreaItem = weatherData.map((item, index) => {
+      const hourItem = item.weather_24.map((hour, hourIndex) => {
+        return (
+          <View style={styles.hourTempItem} key={hourIndex}>
+            <Text style={styles.hourTempItemText}>{hour.time}</Text>
+            <Icon name={hour.icon} size={25} style={[styles.withinDayHoursIcon,{color:hour.color}]}></Icon>
+            <Text style={styles.hourTempItemText}>{hour.degree}</Text>
+          </View>
+        )
+      })
+
+      const dayItem = item.weather_week.map((day, dayIndex) => {
+        return (
+          <View style={styles.itemDay} key={dayIndex}>
+            <Text style={styles.colorFFF}>{day.time}</Text>
+            <Icon name={day.icon} size={25} style={[styles.withinDayHoursIcon,{color:day.color}]}></Icon>
+            <View style={styles.itemMaxMin}>
+              <Text style={[styles.colorFFF, styles.mr20]}>{day.max}</Text>
+              <Text style={styles.colorFFF}>{day.min}</Text>
+            </View>
+          </View>
+        )
+      })
+
+      return (
+        <View style={styles.view1} key={index}>
+          <ScrollView showsVerticalScrollIndicator={false} style={styles.pageContainer}>
+            <View style={styles.head}>
+              <Text style={styles.areaName}>雨花台区</Text>
+              <Text style={styles.weatherDes}>大部多云</Text>
+              <Text style={styles.temperate}>35</Text>
+            </View>
+            <View style={styles.weatherDay}>
+              <View style={styles.todayInfo}>
+                <View style={styles.todayName}>
+                  <Text style={styles.today}>星期五</Text>
+                  <Text style={styles.today}>今天</Text>
+                </View>
+                <View style={styles.todayMaxMin}>
+                  <Text style={styles.maxToMin}>37</Text>
+                  <Text style={styles.maxToMin}>28</Text>
+                </View>
+              </View>
+              <View>
+                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.weatherDayScroll}>
+                  {hourItem}
+                </ScrollView>
+              </View>
+            </View>
+            <View style={styles.weatherWeek}>
+              <View style={styles.weekend}>
+                {dayItem}
+              </View>
+              <View style={[styles.description, styles.weatherDayScroll]}>
+                <Text style={styles.descriptionText}>今日：晴间多云，热指数44。最高38。今日晚间局部多云，最低气温28。</Text>
+              </View>
+            </View>
+          </ScrollView>
+        </View>
+      )
+    })
+    
     return (
       <View style={styles.wrapper}>
         <Swiper>
-          <View style={styles.view1}>
-            <ScrollView showsVerticalScrollIndicator={false} style={styles.pageContainer}>
-              <View style={styles.head}>
-                <Text style={styles.areaName}>雨花台区</Text>
-                <Text style={styles.weatherDes}>大部多云</Text>
-                <Text style={styles.temperate}>35</Text>
-              </View>
-              <View style={styles.weatherDay}>
-                <View style={styles.todayInfo}>
-                  <View style={styles.todayName}>
-                    <Text style={styles.today}>星期四</Text>
-                    <Text style={styles.today}>今天</Text>
-                  </View>
-                  <View style={styles.todayMaxMin}>
-                    <Text style={styles.maxToMin}>36</Text>
-                    <Text style={styles.maxToMin}>28</Text>
-                  </View>
-                </View>
-                <View>
-                  <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.weatherDayScroll}>
-                    <View style={styles.hourTempItem}>
-                      <Text style={styles.hourTempItemText}>15时</Text>
-                      <Text style={styles.hourTempItemText}>icon</Text>
-                      <Text style={styles.hourTempItemText}>35</Text>
-                    </View>
-                    <View style={styles.hourTempItem}>
-                      <Text style={styles.hourTempItemText}>16时</Text>
-                      <Text style={styles.hourTempItemText}>icon</Text>
-                      <Text style={styles.hourTempItemText}>37</Text>
-                    </View>
-                    <View style={styles.hourTempItem}>
-                      <Text style={styles.hourTempItemText}>17时</Text>
-                      <Text style={styles.hourTempItemText}>icon</Text>
-                      <Text style={styles.hourTempItemText}>36</Text>
-                    </View>
-                    <View style={styles.hourTempItem}>
-                      <Text style={styles.hourTempItemText}>18时</Text>
-                      <Text style={styles.hourTempItemText}>icon</Text>
-                      <Text style={styles.hourTempItemText}>36</Text>
-                    </View>
-                    <View style={styles.hourTempItem}>
-                      <Text style={styles.hourTempItemText}>19时</Text>
-                      <Text style={styles.hourTempItemText}>icon</Text>
-                      <Text style={styles.hourTempItemText}>35</Text>
-                    </View>
-                    <View style={styles.hourTempItem}>
-                      <Text style={styles.hourTempItemText}>20时</Text>
-                      <Text style={styles.hourTempItemText}>icon</Text>
-                      <Text style={styles.hourTempItemText}>35</Text>
-                    </View>
-                    <View style={styles.hourTempItem}>
-                      <Text style={styles.hourTempItemText}>21时</Text>
-                      <Text style={styles.hourTempItemText}>icon</Text>
-                      <Text style={styles.hourTempItemText}>35</Text>
-                    </View>
-                    <View style={styles.hourTempItem}>
-                      <Text style={styles.hourTempItemText}>22时</Text>
-                      <Text style={styles.hourTempItemText}>icon</Text>
-                      <Text style={styles.hourTempItemText}>35</Text>
-                    </View>
-                    <View style={styles.hourTempItem}>
-                      <Text style={styles.hourTempItemText}>23时</Text>
-                      <Text style={styles.hourTempItemText}>icon</Text>
-                      <Text style={styles.hourTempItemText}>35</Text>
-                    </View>
-                  </ScrollView>
-                </View>
-              </View>
-              <View style={styles.weatherWeek}>
-                <View style={styles.weekend}>
-                  <View style={styles.itemDay}>
-                    <Text style={styles.colorFFF}>星期五</Text>
-                    <Text style={styles.colorFFF}>icon</Text>
-                    <View style={styles.itemMaxMin}>
-                      <Text style={[styles.colorFFF, styles.mr20]}>36</Text>
-                      <Text style={styles.colorFFF}>28</Text>
-                    </View>
-                  </View>
-                  <View style={styles.itemDay}>
-                    <Text style={styles.colorFFF}>星期六</Text>
-                    <Text style={styles.colorFFF}>icon</Text>
-                    <View style={styles.itemMaxMin}>
-                      <Text style={[styles.colorFFF, styles.mr20]}>36</Text>
-                      <Text style={styles.colorFFF}>28</Text>
-                    </View>
-                  </View>
-                  <View style={styles.itemDay}>
-                    <Text style={styles.colorFFF}>星期日</Text>
-                    <Text style={styles.colorFFF}>icon</Text>
-                    <View style={styles.itemMaxMin}>
-                      <Text style={[styles.colorFFF, styles.mr20]}>36</Text>
-                      <Text style={styles.colorFFF}>28</Text>
-                    </View>
-                  </View>
-                  <View style={styles.itemDay}>
-                    <Text style={styles.colorFFF}>星期一</Text>
-                    <Text style={styles.colorFFF}>icon</Text>
-                    <View style={styles.itemMaxMin}>
-                      <Text style={[styles.colorFFF, styles.mr20]}>36</Text>
-                      <Text style={styles.colorFFF}>28</Text>
-                    </View>
-                  </View>
-                  <View style={styles.itemDay}>
-                    <Text style={styles.colorFFF}>星期二</Text>
-                    <Text style={styles.colorFFF}>icon</Text>
-                    <View style={styles.itemMaxMin}>
-                      <Text style={[styles.colorFFF, styles.mr20]}>36</Text>
-                      <Text style={styles.colorFFF}>28</Text>
-                    </View>
-                  </View>
-                  <View style={styles.itemDay}>
-                    <Text style={styles.colorFFF}>星期三</Text>
-                    <Text style={styles.colorFFF}>icon</Text>
-                    <View style={styles.itemMaxMin}>
-                      <Text style={[styles.colorFFF, styles.mr20]}>36</Text>
-                      <Text style={styles.colorFFF}>28</Text>
-                    </View>
-                  </View>
-                  <View style={styles.itemDay}>
-                    <Text style={styles.colorFFF}>星期四</Text>
-                    <Text style={styles.colorFFF}>icon</Text>
-                    <View style={styles.itemMaxMin}>
-                      <Text style={[styles.colorFFF, styles.mr20]}>36</Text>
-                      <Text style={styles.colorFFF}>28</Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={[styles.description, styles.weatherDayScroll]}>
-                  <Text style={styles.descriptionText}>今日：晴间多云，热指数44。最高38。今日晚间局部多云，最低气温28。</Text>
-                </View>
-              </View>
-            </ScrollView>
-          </View>
+          {weatherAreaItem}
           <View style={styles.view2}>
             <Text>qqqqqqqqqqq</Text>
           </View>
@@ -383,4 +244,8 @@ const styles = StyleSheet.create({
   mr20: {
     marginRight: 20
   },
+  withinDayHoursIcon: {
+    textAlign:"center",
+    paddingTop:5
+  }
 })
