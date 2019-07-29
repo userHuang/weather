@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, PixelRatio } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, PixelRatio, TouchableHighlight } from 'react-native';
 import Swiper from 'react-native-swiper';
 import Dimensions from 'Dimensions';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Util from './util';
+
+const windowSize = Dimensions.get('window');
+const pixel = 2 / PixelRatio.get();
 
 export default class Weather extends Component {
   constructor (props) {
@@ -92,16 +95,17 @@ export default class Weather extends Component {
     
     return (
       <View style={styles.wrapper}>
-        <Swiper>
+        <Swiper paginationStyle={{bottom:10, paddingTop:10, borderTopColor:"rgba(255,255,255,0.7)"}}>
           {weatherAreaItem}
         </Swiper>
+        <TouchableHighlight style={styles.backBtn}>
+          <Icon size={17} name="ios-list-box" style={styles.backBtnIcon}></Icon>
+        </TouchableHighlight>
       </View>
     )
   }
 }
 
-const windowSize = Dimensions.get('window');
-const pixel = 2 / PixelRatio.get();
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1
@@ -115,9 +119,9 @@ const styles = StyleSheet.create({
   pageContainer: {
     position: 'absolute',
     width: windowSize.width,
-    left:0,
+    left: 0,
     top: 0,
-    height: windowSize.height
+    height: windowSize.height - 60
   },
   head: {
     height: 300,
@@ -181,7 +185,6 @@ const styles = StyleSheet.create({
     width: 60,
     height: 120
   },
-
   hourTempItemText: {
     fontSize: 18,
     color: '#FFF',
@@ -191,7 +194,7 @@ const styles = StyleSheet.create({
   },
 
   weatherWeek: {
-    height: 400
+    height: 360
   },
   weekend: {
     height: 280,
@@ -199,7 +202,7 @@ const styles = StyleSheet.create({
     paddingRight: 20
   },
   itemDay: {
-    height: 40,
+    height: 36,
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
@@ -225,6 +228,15 @@ const styles = StyleSheet.create({
     color: '#FFF'
   },
 
+  backBtn:{
+    position: 'absolute', 
+    right: 20,
+    bottom: 7
+  },
+  backBtnIcon:{
+    color: '#fff'
+  },
+
   ml10: {
     marginLeft: 20
   },
@@ -232,7 +244,7 @@ const styles = StyleSheet.create({
     marginRight: 20
   },
   withinDayHoursIcon: {
-    textAlign:"center",
-    paddingTop:5
+    textAlign: 'center',
+    lineHeight: 40
   }
 })
